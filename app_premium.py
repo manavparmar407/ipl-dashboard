@@ -165,35 +165,5 @@ fig4 = px.line(
 )
 st.plotly_chart(fig4, use_container_width=True)
 
-# ======================================================
-#   EXPORT PDF FUNCTION
-# ======================================================
-def export_dashboard_as_pdf(figures):
-    pdf = FPDF()
-    pdf.set_auto_page_break(auto=True, margin=15)
-
-    for fig in figures:
-        with tempfile.NamedTemporaryFile(delete=False, suffix=".png") as tmp:
-            pio.write_image(fig, tmp.name, format="png")
-            temp_path = tmp.name
-
-        pdf.add_page()
-        pdf.image(temp_path, x=10, w=180)
-        os.remove(temp_path)
-
-    output_file = "IPL_Dashboard.pdf"
-    pdf.output(output_file)
-    return output_file
-
-# ----------------- EXPORT BUTTON -------------------
-st.subheader("📄 Download Dashboard as PDF")
-
-figures = [fig1, fig2, fig3, fig4]
-
-if st.button("Export PDF"):
-    pdf_file = export_dashboard_as_pdf(figures)
-    with open(pdf_file, "rb") as f:
-        st.download_button("⬇ Download PDF", f, file_name="IPL_Dashboard.pdf")
-
 
 st.success("Dashboard Loaded Successfully 🎉")
